@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+require 'thor'
+require 'nekonote'
+
+class Nekonote::CLI < Thor
+	desc "check path", "check files in path"
+	option :name, :aliases => "n", :type => :string
+	option :enc, :aliases => "e", :type => :string
+	option :rs, :aliases => "s", :type => :string
+	option :moji, :aliases => "m", :type => :string
+	option :re, :aliases => "r", :type => :string
+	option :diff, :aliases => "d", :type => :boolean
+	option :path, :aliases => "p", :type => :boolean
+	def check(path)
+		Nekonote.check path, options
+	end
+
+	desc "rename path", "rename files in path"
+	options :upcase => :boolean, :alnum => :boolean, :ext => :string
+	def rename(path)
+		Nekonote.rename path, options
+	end
+
+	desc "normalize path", "normalize files in path"
+	option :enc, :aliases => "e"
+	option :sep, :aliases => "s"
+	option :zen, :aliases => "z"
+	option :blank, :aliases => "b"
+	def normalize(path, out)
+		options[:out] = out
+		Nekonote.normalize path, options
+	end
+end
+
+Nekonote::CLI.start ARGV
